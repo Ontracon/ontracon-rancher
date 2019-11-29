@@ -1,0 +1,16 @@
+nodes:
+  - address: on-ams-rancher-p01.ontracon.int
+    user: jkritzen
+    role: [controlplane,worker,etcd]
+  - address: on-ams-rancher-p02.ontracon.int
+    user: jkritzen
+    role: [controlplane,worker,etcd]
+  - address: on-ams-rancher-p03.ontracon.int
+    user: jkritzen
+    role: [controlplane,worker,etcd]
+
+services:
+  etcd:
+    snapshot: true
+    creation: 6h
+    retention: 24h
