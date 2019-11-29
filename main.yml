@@ -1,0 +1,8 @@
+- hosts: localhost
+  tasks:
+
+   - name: Terraform Plan
+     terraform:
+      project_path: terraform-azure-dev/
+      state: present
+ 
