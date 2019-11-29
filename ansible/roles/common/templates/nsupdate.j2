@@ -1,0 +1,25 @@
+#!/bin/sh
+# /etc/dhcp/dhclient.d/nsupdate.sh
+
+nsupdate_config() {
+
+# Set Domainname
+requireddomain=ontracon.int
+host=`hostname`
+
+# Gather active IP
+my_ip=$(ip route get 8.8.8.8 | awk 'NR==1 {print $NF}')
+
+# Gather reverse IP
+ptrrec="$(printf %s "$my_ip." | tac -s.)in-addr.arpa"
+
+# Update DNS Entry
+ nsupdatecmds=/var/tmp/nsupdatecmds
+ echo "update del $host.$requireddomain" > $nsupdatecmds
+ echo "update add $host.$requireddomain 3600 a $my_ip" >> $nsupdatecmds
+ echo "" >> $nsupdatecmds
+ echo "update add $ptrrec 3600 ptr $host.$requireddomain"  >> $nsupdatecmds
+ echo "send" >> $nsupdatecmds
+ nsupdate $nsupdatecmds
+}
+

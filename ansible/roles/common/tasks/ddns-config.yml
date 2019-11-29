@@ -1,0 +1,10 @@
+    - name: nsupdate config
+      template:
+        src: templates/nsupdate.j2
+        dest: /etc/dhcp/dhclient.d/nsupdate.sh
+        mode: 0744
+  
+    - name: Restart network
+      service:
+        name: network
+        state: restarted

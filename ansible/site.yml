@@ -1,0 +1,19 @@
+---
+# This playbook deploys the whole application stack in this site and some Security Settings.
+
+- name: apply common configuration to all nodes
+  hosts: all
+  become: yes
+  become_user: root
+
+  roles:
+    - common
+
+- name: insstall & configure docker 
+  hosts: rancher
+  become: yes
+  become_user: root
+
+  roles:
+    - rancher
+
