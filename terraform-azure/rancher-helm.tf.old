@@ -1,0 +1,69 @@
+provider "kubernetes" {
+  config_path = "./kube_config_cluster.yml"
+}
+
+provider "helm" {
+  install_tiller  = true
+  namespace       = "kube-system"
+  service_account = "tiller"
+  kubernetes {
+    config_path = "./kube_config_cluster.yml"
+  }
+}
+
+data "helm_repository" "rancher" {
+
+
+  name = "rancher-stable"
+  url  = "https://releases.rancher.com/server-charts/stable"
+}
+
+
+# Wait 10 Seconds until Kubernetes is up and running
+resource "null_resource" "before" {
+depends_on = [local_file.kube_cluster_yaml]
+}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 10"
+  }
+  triggers = {
+    "before" = "${null_resource.before.id}"
+  }
+}
+
+resource "kubernetes_namespace" "rancher" {
+  depends_on = [
+                azurerm_virtual_machine.vms,
+                null_resource.cmd_ansible,
+                rke_cluster.cluster,
+		local_file.kube_cluster_yaml,
+                null_resource.delay
+	       ]
+  metadata {
+    name = "cattle-system"
+  }
+}
+
+resource "helm_release" "rancher" {
+
+  depends_on = [
+                azurerm_virtual_machine.vms,
+                null_resource.cmd_ansible,
+	        local_file.kube_cluster_yaml,
+                rke_cluster.cluster,
+		kubernetes_namespace.rancher
+	       ]
+ set {
+    name  = "tls"
+    value = "external"
+   }
+
+  name       = "rancher-stable"
+  namespace  = "cattle-system"
+  repository =  data.helm_repository.rancher.metadata[0].name
+  chart      = "rancher"
+  timeout          = 900
+}
+

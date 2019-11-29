@@ -1,0 +1,4 @@
+[rancher]
+${server}
+
+
