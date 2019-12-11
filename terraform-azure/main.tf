@@ -1,10 +1,16 @@
 #
 # Creating Resource Group
 #
-resource "azurerm_resource_group" "MyRG" {
-  name     = var.my_default_rg_name
-  location = var.location
-  tags     = var.tags
+#resource "azurerm_resource_group" "MyRG" {
+#  name     = var.my_default_rg_name
+#  location = var.location
+#  tags     = var.tags
+#}
+
+
+#refer to a existing ResourceGroup
+data "azurerm_resource_group" "MyRG" {
+  name = var.my_default_rg_name
 }
 
 #

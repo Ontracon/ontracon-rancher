@@ -3,7 +3,7 @@
 #
 resource "azurerm_storage_account" "mystorageaccount" {
   name                     = "ondiag${random_id.randomId.hex}"
-  resource_group_name      = azurerm_resource_group.MyRG.name
+  resource_group_name      = data.azurerm_resource_group.MyRG.name
   location                 = var.location
   account_replication_type = "LRS"
   account_tier             = "Standard"
@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "mystorageaccount" {
 resource "azurerm_availability_set" "avset" {
   name                         = "avset-rancher"
   location                     = var.location
-  resource_group_name          = azurerm_resource_group.MyRG.name
+  resource_group_name          = data.azurerm_resource_group.MyRG.name
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
   managed                      = true
@@ -27,13 +27,13 @@ resource "azurerm_availability_set" "avset" {
 resource "azurerm_network_interface" "vm_nics" {
   name                = "NIC-${var.vm_names[count.index]}"
   location            = var.location
-  resource_group_name = azurerm_resource_group.MyRG.name
+  resource_group_name =  data.azurerm_resource_group.MyRG.name
 
   ip_configuration {
     name                                    = "myNicConfiguration"
     subnet_id                               = data.azurerm_subnet.MyNet.id
     private_ip_address_allocation           = "dynamic"
-#    load_balancer_backend_address_pools_ids = [azurerm_lb_backend_address_pool.backend_pool.id]
+    load_balancer_backend_address_pools_ids = [azurerm_lb_backend_address_pool.backend_pool.id]
   }
   tags  = var.tags
   count = length(var.vm_names)
@@ -47,7 +47,7 @@ resource "azurerm_network_interface" "vm_nics" {
 resource "azurerm_virtual_machine" "vms" {
   name                  = var.vm_names[count.index]
   location              = var.location
-  resource_group_name   = azurerm_resource_group.MyRG.name
+  resource_group_name   = data.azurerm_resource_group.MyRG.name
   network_interface_ids = [element(azurerm_network_interface.vm_nics.*.id, count.index)]
   vm_size               = var.vm_size
   availability_set_id   = azurerm_availability_set.avset.id

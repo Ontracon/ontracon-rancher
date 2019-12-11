@@ -10,8 +10,7 @@ variable "tags" {
   type        = map(string)
 
   default = {
-    owner = "j.kritzen@ontracon.de"
-    env   = "Production"
+    env   = "rancher-development"
   }
 }
 
@@ -19,29 +18,29 @@ variable "tags" {
 # Default RG
 variable "my_default_rg_name" {
   description = "Default resource group name that the application will be created in."
-  default     = "on-ams-prd-rancher-rg"
+  default     = "LSY_WEUR_DEV_Rancher_MGMT_RG"
 }
 
 # Existing Network Config
 variable "vnet_rg_name" {
-  description = "Name of the vnet to use"
-  default     = "on-ams-prd-central-net-rg"
+  description = "Name of the resourcegroup vnet to use"
+  default     = "LSY_WEUR_DEV_Rancher_NET_RG_001"
 }
 
 variable "vnet_name" {
   description = "Name of the vnet to use"
-  default     = "on-ams-prd-central-hub"
+  default     = "LSY_WEUR_DEV_Rancher_VNET_001"
 }
 
 variable "subnet_name" {
   description = "Name of the subnet to use"
-  default     = "IaasSubnet"
+  default     = "LSY_WEUR_DEV_Rancher_MGMT_SUB_001"
 }
 
 ### VM's to create
 variable "vm_names" {
   description = "A list of VM's to be deployed."
-  default     = ["on-ams-rancher-p01", "on-ams-rancher-p02", "on-ams-rancher-p03"]
+  default     = ["DLSYLCSRCH01", "DLSYLCSRCH01", "DLSYLCSRCH01"]
 }
 
 ### User creation
