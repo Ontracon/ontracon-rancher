@@ -40,7 +40,7 @@ variable "subnet_name" {
 ### VM's to create
 variable "vm_names" {
   description = "A list of VM's to be deployed."
-  default     = ["DLSYLCSRCH01", "DLSYLCSRCH01", "DLSYLCSRCH01"]
+  default     = ["DLSYLCSRCH01", "DLSYLCSRCH02", "DLSYLCSRCH03"]
 }
 
 ### User creation

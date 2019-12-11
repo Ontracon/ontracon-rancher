@@ -86,7 +86,8 @@ resource "azurerm_virtual_machine" "vms" {
     enabled     = "true"
     storage_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
   }
-  count = length(var.vm_names)
+ 
+count = length(var.vm_names)
 
 # Wait until Instance is up
   provisioner "remote-exec" {
