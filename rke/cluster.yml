@@ -1,0 +1,16 @@
+nodes:
+  - address: 10.5.232.133
+    user: jkritzen
+    role: [controlplane,worker,etcd]
+  - address: 10.5.232.134
+    user: jkritzen
+    role: [controlplane,worker,etcd]
+  - address: 10.5.232.135
+    user: jkritzen
+    role: [controlplane,worker,etcd]
+
+services:
+  etcd:
+    snapshot: true
+    creation: 12h
+    retention: 24h
